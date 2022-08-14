@@ -118,12 +118,14 @@ C_INCLUDES =  \
 
 # -Idrivers/inc \
 
-# DRI_DIR ?= drivers
+DRI_DIR ?= drivers
 LIB_DIR ?= libraries
+LVGL_DIR ?= lvgl
 # FS_DIR ?= fs
 # RTOS_DIR ?= rtos
-# include $(DRI_DIR)/drivers.mk
+include $(DRI_DIR)/drivers.mk
 include $(LIB_DIR)/lib.mk
+include $(LVGL_DIR)/lvgl.mk
 
 # compile gcc flags
 ASFLAGS = $(MCU) $(AS_DEFS) $(AS_INCLUDES) $(OPT) -Wall  -Wextra -fdata-sections -ffunction-sections

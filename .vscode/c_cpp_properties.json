@@ -5,7 +5,7 @@
             "includePath": [
                 "${workspaceFolder}",
                 "${workspaceFolder}/app",
-                // "${workspaceFolder}/drivers/inc",
+                "${workspaceFolder}/drivers/inc",
                 "${workspaceFolder}/lvgl",
                 "${workspaceFolder}/lvgl/src",
                 "${workspaceFolder}/libraries/GD32F4xx_standard_peripheral/Include",
