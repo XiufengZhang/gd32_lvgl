@@ -60,11 +60,17 @@
 #define SEL_IRC16M      0x00U
 #define SEL_HXTAL       0x01U
 #define SEL_PLLP        0x02U
-#define RCU_MODIFY      {volatile uint32_t i; \
-                         RCU_CFG0 |= RCU_AHB_CKSYS_DIV2; \
-                         for(i=0;i<50000;i++); \
-                         RCU_CFG0 |= RCU_AHB_CKSYS_DIV4; \
-                         for(i=0;i<50000;i++);}
+#define RCU_MODIFY(__delay)     do{                                     \
+                                    volatile uint32_t i;                \
+                                    if(0 != __delay){                   \
+                                        RCU_CFG0 |= RCU_AHB_CKSYS_DIV2; \
+                                        for(i=0; i<__delay; i++){       \
+                                        }                               \
+                                        RCU_CFG0 |= RCU_AHB_CKSYS_DIV4; \
+                                        for(i=0; i<__delay; i++){       \
+                                        }                               \
+                                    }                                   \
+                                }while(0)
                         
 /* set the system clock frequency and declare the system clock configuration function */
 #ifdef __SYSTEM_CLOCK_IRC16M
@@ -133,8 +139,9 @@ void SystemInit (void)
     /* Reset the RCU clock configuration to the default reset state */
     /* Set IRC16MEN bit */
     RCU_CTL |= RCU_CTL_IRC16MEN;
-
-    RCU_MODIFY
+    while(0U == (RCU_CTL & RCU_CTL_IRC16MSTB)){
+    }
+    RCU_MODIFY(0x50);
     
     RCU_CFG0 &= ~RCU_CFG0_SCS;
     
