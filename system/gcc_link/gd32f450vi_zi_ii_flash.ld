@@ -2,18 +2,18 @@
 ENTRY(Reset_Handler)
 
 /* Highest address of the user mode stack */
-_sp = 0x20030000;    /* end of RAM */
+_sp = 0x20070000;    /* end of RAM */
 /* Generate a link error if heap and stack don't fit into RAM */
 _Min_Heap_Size = 0x800000;/*0x200;      /* required amount of heap  */
 _Min_Stack_Size = 0x400; /* required amount of stack */
 
-/* Specify the memory areas */
+/* Specify the memory areas RAM+TCMRAM=512K*/
 MEMORY
 {
-RAM (xrw)      : ORIGIN = 0x20000000, LENGTH = 192K
+RAM (xrw)      : ORIGIN = 0x20000000, LENGTH = 448K
 EXRAM (xrw)    : ORIGIN = 0xD0000000, LENGTH = 8192K
 TCMRAM (rw)    : ORIGIN = 0x10000000, LENGTH = 64K
-FLASH (rx)     : ORIGIN = 0x8000000, LENGTH = 2048K
+FLASH (rx)     : ORIGIN = 0x8000000, LENGTH = 256K
 }
 
 /* Define output sections */

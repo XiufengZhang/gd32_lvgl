@@ -143,7 +143,7 @@ CFLAGS += -MMD -MP -MF"$(@:%.o=%.d)"
 # LDFLAGS
 #######################################
 # link script
-LDSCRIPT = system/gcc_link/gd32f450z_flash.ld
+LDSCRIPT = system/gcc_link/gd32f450vi_zi_ii_flash.ld
 
 # libraries
 LIBS = -lc -lm -lnosys
