@@ -18,7 +18,7 @@ ErrStatus rcu_init(void)//主时钟AHB 200MHz, APB2 100MHz, APB1 50MHz
     // clock = rcu_clock_freq_get(CK_AHB);
     // clock = rcu_clock_freq_get(CK_APB1);
     // clock = rcu_clock_freq_get(CK_APB2);
-    if (!clock)
+    if (clock != SystemCoreClock)
         return ERROR;
 
     // TODO
@@ -40,6 +40,7 @@ ErrStatus rcu_init(void)//主时钟AHB 200MHz, APB2 100MHz, APB1 50MHz
     /* enable EXMC clock*/
     rcu_periph_clock_enable(RCU_EXMC);// AHB3 peripherals
     rcu_periph_clock_enable(RCU_TLI); // APB2 peripherals
+    /* GPIO clock enable */
     rcu_periph_clock_enable(RCU_GPIOA);
     rcu_periph_clock_enable(RCU_GPIOB);
     rcu_periph_clock_enable(RCU_GPIOC);
@@ -50,6 +51,23 @@ ErrStatus rcu_init(void)//主时钟AHB 200MHz, APB2 100MHz, APB1 50MHz
     rcu_periph_clock_enable(RCU_GPIOH);
     // GD32F450I
     // rcu_periph_clock_enable(RCU_GPIOI);
+
+    /* configure the PLLSAI clock to generate lcd clock */
+    /* PLLSAI PLL, PSC = N, PLLSAI_N = 192, PLLSAI_P = 4, PLLSAI_R = 2
+    CK_TLI = 1M * PLLSAI_N / PLLSAI_R / RCU_PLLSAIR_DIV4
+    CK_PLLSAIP = 1M * PLLSAI_N / PLLSAI_P */
+    rcu_osci_off(RCU_PLLSAI_CK);
+    // 16MHz
+    if (ERROR == rcu_pllsai_config(192, 4, 2)) {
+        while (1)
+            ;
+    }
+    rcu_tli_clock_div_config(RCU_PLLSAIR_DIV4);
+    rcu_osci_on(RCU_PLLSAI_CK);
+    if (ERROR == rcu_osci_stab_wait(RCU_PLLSAI_CK)) {
+        while (1)
+            ;
+    }
 
     /*
     if (rcu_flag_get(RCC_FLAG_HSERDY))

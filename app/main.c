@@ -1,4 +1,4 @@
-/*!
+/**
     \file    main.c
     \brief   led spark with systick
 
@@ -47,7 +47,7 @@ OF SUCH DAMAGE.
 
 #include "lvgl.h"
 
-/*!
+/**
     \brief    toggle the led every 500ms
     \param[in]  none
     \param[out] none
@@ -71,7 +71,7 @@ void led_spark(void)
     }
 }
 
-/*!
+/**
     \brief    main function
     \param[in]  none
     \param[out] none
@@ -82,9 +82,10 @@ int main(void)
     rcu_init();
     systick_config();
     exmc_synchronous_dynamic_ram_init(EXMC_SDRAM_DEVICE0);
+    // sdram_memcheck(EXMC_SDRAM_DEVICE0);
 
     // uint8_t ptr[32];
-    // uint8_t ptr_read[32];
+    // uint8_t ptr_read[600];
     // memset(ptr, 0xcc, sizeof(ptr));
     // memset(ptr_read, 0, sizeof(ptr_read));
     // sdram_writebuffer_8(EXMC_SDRAM_DEVICE0, ptr, 0, sizeof(ptr));
@@ -94,45 +95,51 @@ int main(void)
     // sdram_writebuffer_16(EXMC_SDRAM_DEVICE0, (uint16_t *)ptr, 0, sizeof(ptr) / sizeof(uint16_t));
     // sdram_readbuffer_16(EXMC_SDRAM_DEVICE0, (uint16_t *)ptr_read, 0, sizeof(ptr_read) / sizeof(uint16_t));
 
-    // lcd_init();
-    // lcd_layer_init(LCD_LAYER_BACKGROUND);
-    // // lcd_layer_init(LCD_LAYER_FOREGROUND);
-    // lcd_layer_enable(LCD_LAYER_BACKGROUND);
-    // // lcd_layer_enable(LCD_LAYER_FOREGROUND);
-    // lcd_layer_set(LCD_LAYER_BACKGROUND);
-    // // lcd_layer_set(LCD_LAYER_FOREGROUND);
+    lcd_init();
+    lcd_layer_init(LCD_LAYER_BACKGROUND);
+    lcd_layer_enable(LCD_LAYER_BACKGROUND);
+    lcd_layer_set(LCD_LAYER_BACKGROUND);
+    lcd_clear(lcd_get_color_value(lcd_color_black));// black
+    // sdram_set_16(EXMC_SDRAM_DEVICE0, 0x0000, 0, 800 * 480);
+    delay_1ms(1000);
+    lcd_clear(lcd_get_color_value(lcd_color_white));// white
+    // sdram_set_16(EXMC_SDRAM_DEVICE0, 0xffff, 0, 800 * 480);
+    delay_1ms(1000);
+    lcd_clear(lcd_get_color_value(lcd_color_blue));// blue
+    // sdram_set_16(EXMC_SDRAM_DEVICE0, 0x001f, 0, 800 * 480);
+    delay_1ms(1000);
+    lcd_clear(lcd_get_color_value(lcd_color_green));// green
+    // sdram_set_16(EXMC_SDRAM_DEVICE0, 0x07e0, 0, 800 * 480);
+    delay_1ms(1000);
+    lcd_clear(lcd_get_color_value(lcd_color_red));// red
+    // sdram_set_16(EXMC_SDRAM_DEVICE0, 0xf800, 0, 800 * 480);
+    delay_1ms(1000);
+
+    lcd_line_draw(0, 50, 400, LCD_LINEDIR_HORIZONTAL);
+    lcd_rectangle_draw(100, 100, 100, 200);
+    lcd_rectangle_fill(400, 100, 200, 100);
+    lcd_font_set(&font_6x11);
+    lcd_char_display(300, 200, '!');
+    lcd_string_display(300, 220, " !\"#$%'()*+,-.0123456789:;<=>?@");
+    lcd_string_display(300, 240, "ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`");
+    lcd_string_display(300, 260, "abcdefghijklmnopqrstuvwxyz{|}~");
+
+    // lcd_layer_init(LCD_LAYER_FOREGROUND);
+    // lcd_layer_enable(LCD_LAYER_FOREGROUND);
+    // lcd_layer_set(LCD_LAYER_FOREGROUND);
+    // lcd_clear(lcd_get_color_value(lcd_color_black));// black
+    // delay_1ms(1000);
+    // lcd_clear(lcd_get_color_value(lcd_color_white));// white
+    // delay_1ms(1000);
+    // lcd_clear(lcd_get_color_value(lcd_color_blue));// blue
+    // delay_1ms(1000);
+    // lcd_clear(lcd_get_color_value(lcd_color_green));// green
+    // delay_1ms(1000);
+    // lcd_clear(lcd_get_color_value(lcd_color_red));// red
+    // delay_1ms(1000);
 
     while (1) {
         led_spark();
         delay_1ms(10);
-
-    //     lcd_clear(0x0000);
-    // // sdram_readbuffer_16(EXMC_SDRAM_DEVICE0, (uint16_t*)ptr_read, 0, sizeof(ptr_read));
-    //     delay_1ms(1000);
-    //     lcd_clear(0x001f);
-    // sdram_readbuffer_16(EXMC_SDRAM_DEVICE0, (uint16_t*)ptr_read, 0, sizeof(ptr_read));
-    //     delay_1ms(1000);
-    //     lcd_clear(0x07e0);
-    //     delay_1ms(1000);
-    //     lcd_clear(0xf800);
-    //     delay_1ms(1000);
-
-    //     lcd_clear(0x07ff);
-    //     delay_1ms(1000);
-    //     lcd_clear(0xf81f);
-    //     delay_1ms(1000);
-    //     lcd_clear(0xffe0);
-    //     delay_1ms(1000);
-    //     lcd_clear(0xffff);
-    //     delay_1ms(1000);
-
-    //     delay_1ms(1000);
-    //     delay_1ms(1000);
-    //     // lcd_clear(0xC618);
-    //     lcd_clear(0xffff);
-    // sdram_readbuffer_16(EXMC_SDRAM_DEVICE0, (uint16_t*)ptr_read, 0, sizeof(ptr_read));
-    //     delay_1ms(1000);
-    //     delay_1ms(1000);
-        
     }
 }

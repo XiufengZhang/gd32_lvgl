@@ -11,6 +11,7 @@ MCU：GD32F450ZI
 1. new project add xxx.mk file for makefile nested  
 2. update gd libraries to 3.0.2 from 3.0.0 
 3. add clk rcu, and exmc sdram 
+4. add tft lcd 
 
 
 **v1.0.0**  
